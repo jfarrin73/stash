@@ -1,1 +1,12 @@
-*node_modules
+# Dependencies
+node_modules
+.pnpm-debug.log
+
+# OS
+.DS_Store
+
+# Local Test Configuration (from Step 5)
+stash.json
+
+# Vercel
+.vercel
