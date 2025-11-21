@@ -1,7 +1,7 @@
 {
-  "name": "cli",
-  "version": "1.0.0",
-  "description": "",
+  "name": "stash-ts",
+  "version": "0.0.3",
+  "description": "CLI for adding hooks/utils to projects",
   "main": "index.js",
   "scripts": {
     "build": "tsup src/index.ts --format cjs --minify --clean",
@@ -11,9 +11,15 @@
   "bin": {
     "stash": "./dist/index.js"
   },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "jfarrin73",
+  "license": "MIT",
   "dependencies": {
     "chalk": "^5.6.2",
     "commander": "^14.0.2",
