@@ -1,0 +1,6 @@
+{
+  "paths": {
+    "hooks": "src/hooks",
+    "utils": "src/lib/utils"
+  }
+}

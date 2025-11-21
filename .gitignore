@@ -5,9 +5,9 @@ node_modules
 # OS
 .DS_Store
 
-# Local Test Configuration (from Step 5)
-stash.json
+# Dev
 context.txt
+./stash.json
 
 # Vercel
 .vercel
