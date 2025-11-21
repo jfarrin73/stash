@@ -1,0 +1,68 @@
+---
+title: useDebounce
+description: Delay updating a value until a specified time has passed.
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+## Installation
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+  <Tab value="npm">
+  ```bash
+  npx stash-ts@latest add use-debounce
+  ```
+  </Tab>
+  <Tab value="pnpm">
+  ```bash
+  pnpm dlx stash-ts@latest add use-debounce
+  ```
+  </Tab>
+  <Tab value="yarn">
+  ```bash
+  yarn dlx stash-ts@latest add use-debounce
+  ```
+  </Tab>
+  <Tab value="bun">
+  ```bash
+  bunx stash-ts@latest add use-debounce
+  ```
+  </Tab>
+</Tabs>
+
+## Usage
+
+This hook is commonly used for search inputs to prevent making API requests on every keystroke.
+
+```tsx
+import { useState, useEffect } from "react"
+import { useDebounce } from "@/hooks/use-debounce"
+
+export function SearchComponent() {
+  const [query, setQuery] = useState("")
+  const debouncedQuery = useDebounce(query, 500)
+
+  useEffect(() => {
+    if (debouncedQuery) {
+      // Perform search here
+      console.log(`Searching for: ${debouncedQuery}`)
+    }
+  }, [debouncedQuery])
+
+  return (
+    <input
+      defaultValue={query}
+      onChange={(e) => setQuery(e.target.value)}
+      placeholder="Search..."
+      className="border p-2 rounded"
+    />
+  )
+}
+```
+
+## API
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `value` | `T` | - | The value to debounce. |
+| `delay` | `number` | `500` | The delay in milliseconds before the value updates. |
