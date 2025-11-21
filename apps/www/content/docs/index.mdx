@@ -26,16 +26,56 @@ While shadcn/ui provides the **visual** layer (buttons, dialogs, inputs) typical
 
 It fills the gap for common requirements like state management, DOM interaction, and data formatting that almost every project needs but shouldn't require a heavy third-party dependency.
 
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
 ## Quick Start
 
 Initialize the project to configure your file paths:
 
-```bash
-npx stash init
-```
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+  <Tab value="npm">
+  ```bash
+  npx stash-ts@latest init
+  ```
+  </Tab>
+  <Tab value="pnpm">
+  ```bash
+  pnpm dlx stash-ts@latest init
+  ```
+  </Tab>
+  <Tab value="yarn">
+  ```bash
+  yarn dlx stash-ts@latest init
+  ```
+  </Tab>
+  <Tab value="bun">
+  ```bash
+  bunx stash-ts@latest init
+  ```
+  </Tab>
+</Tabs>
 
-Add a hook or utility
+Add a hook or utility:
 
-```bash
-npx stash add use-debounce
-```
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+  <Tab value="npm">
+  ```bash
+  npx stash-ts@latest add use-debounce
+  ```
+  </Tab>
+  <Tab value="pnpm">
+  ```bash
+  pnpm dlx stash-ts@latest add use-debounce
+  ```
+  </Tab>
+  <Tab value="yarn">
+  ```bash
+  yarn dlx stash-ts@latest add use-debounce
+  ```
+  </Tab>
+  <Tab value="bun">
+  ```bash
+  bunx stash-ts@latest add use-debounce
+  ```
+  </Tab>
+</Tabs>

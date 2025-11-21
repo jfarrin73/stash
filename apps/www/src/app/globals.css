@@ -46,7 +46,8 @@
 }
 
 :root {
-  /* fumadocs */
+	/* fumadocs */
+	--fd-layout-width: 100%;
 	--color-fd-primary: oklch(51.1% 0.096 186.391);
 	/* shadcn */
 	--radius: 0.625rem;
