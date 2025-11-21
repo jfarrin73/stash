@@ -1,7 +1,41 @@
 ---
 title: Stash TS
+description: Reusable hooks, utilities, and types for your React applications.
 ---
 
-## Introduction
+# Introduction
 
-I love Stash.
+**Stash** is a collection of re-usable hooks, utility functions, and TypeScript types that you can copy and paste into your apps.
+
+It is built on the same design philosophy as [shadcn/ui](https://ui.shadcn.com/). Instead of installing a massive npm package with generic functions, you use a CLI to add only the specific logic you need directly to your codebase.
+
+## Why not an npm package?
+
+The goal is ownership and flexibility.
+
+1.  **Ownership:** When you add a hook, the code becomes yours. You can modify the types, adjust the logic, or strip out parts you don't need.
+2.  **Zero Bloat:** You don't need to install `lodash` just to debounce a function. You install `use-debounce`, and that is all you get.
+3.  **Transparency:** You can see exactly what the code is doing. There are no hidden abstractions inside a compiled `node_modules` folder.
+
+## Relation to shadcn/ui
+
+While shadcn/ui provides the **visual** layer (buttons, dialogs, inputs) typically stored in `components/ui`, Stash provides the **logic** layer typically stored in `hooks` and `lib/utils`.
+
+*   **shadcn/ui**: Handles how things look (`components/ui/button.tsx`).
+*   **Stash**: Handles how things work (`hooks/use-debounce.ts`).
+
+It fills the gap for common requirements like state management, DOM interaction, and data formatting that almost every project needs but shouldn't require a heavy third-party dependency.
+
+## Quick Start
+
+Initialize the project to configure your file paths:
+
+```bash
+npx stash init
+```
+
+Add a hook or utility
+
+```bash
+npx stash add use-debounce
+```
