@@ -5,6 +5,7 @@ export interface Config {
   paths: {
     hooks: string;
     utils: string;
+    components: string;
   };
 }
 

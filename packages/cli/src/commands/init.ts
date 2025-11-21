@@ -27,6 +27,12 @@ export const init = new Command()
         message: "Write configuration to stash.json?",
         initial: true,
       },
+      {
+        type: "text",
+        name: "components",
+        message: "Where should logic components be installed?",
+        initial: "src/components",
+      },
     ]);
 
     if (!response.proceed) {

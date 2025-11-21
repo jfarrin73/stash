@@ -10,7 +10,7 @@ type RegistryItem = {
   files: Array<{
     path: string
     content: string
-    type: "registry:hook" | "registry:util" // extend as needed
+    type: "registry:hook" | "registry:util"
   }>
   dependencies?: string[]
 }
@@ -18,13 +18,11 @@ type RegistryItem = {
 const registry: RegistryItem[] = []
 
 async function buildRegistry() {
-  // 1. Ensure public directory exists
   if (!fs.existsSync(PUBLIC_PATH)) {
     fs.mkdirSync(PUBLIC_PATH, { recursive: true })
   }
 
-  // 2. Define folders to scan
-  const folders = ["hooks", "utils", "types"]
+  const folders = ["hooks", "utils", "types", "components"];
 
   for (const folder of folders) {
     const folderPath = path.join(REGISTRY_PATH, folder)
@@ -48,12 +46,11 @@ async function buildRegistry() {
             type: `registry:${folder === "hooks" ? "hook" : "util"}` as any
           }
         ],
-        dependencies: [] // You can implement AST parsing later to auto-detect imports
+        dependencies: []
       })
     }
   }
 
-  // 3. Write index.json
   const outputPath = path.join(PUBLIC_PATH, "index.json")
   fs.writeFileSync(outputPath, JSON.stringify(registry, null, 2))
   
