@@ -1,0 +1,74 @@
+---
+title: useHotkey
+description: React hook for handling keyboard shortcuts and hotkeys.
+---
+
+# useHotkey
+
+`useHotkey` is a reusable React hook for handling keyboard shortcuts and hotkeys in your application. It allows you to specify a key or key combination and a callback function that will be triggered when the hotkey is pressed.
+
+## Installation
+
+Install the hook using the Stash CLI:
+
+```bash
+npx stash add use-hotkey
+```
+
+## Usage
+
+Here's how you can use the `useHotkey` hook in a component:
+
+```tsx
+import { useHotkey } from "@/hooks/use-hotkey";
+
+export default function HotkeyExample() {
+  useHotkey("ctrl+k", (event) => {
+    event.preventDefault();
+    alert("You pressed Ctrl+K!");
+  });
+
+  return <div>Press <kbd>Ctrl</kbd> + <kbd>K</kbd> to trigger the hotkey.</div>;
+}
+```
+
+You can also pass an array of hotkeys or customize the event type:
+
+```tsx
+useHotkey(["ctrl+s", "meta+s"], (event) => {
+  event.preventDefault();
+  // Save logic here
+}, { eventType: "keydown" });
+```
+
+## API
+
+```ts
+useHotkey(
+  hotkey: string | string[],
+  callback: (event: KeyboardEvent) => void,
+  options?: {
+    enabled?: boolean;
+    eventType?: "keydown" | "keyup";
+  }
+)
+```
+
+- **hotkey**: A string (e.g. `"ctrl+k"`, `"shift+?"`) or array of strings for multiple hotkeys.
+- **callback**: Function to call when the hotkey is pressed.
+- **options**: Optional object:
+  - `enabled` (default: `true`): Enable or disable the hotkey.
+  - `eventType` (default: `"keydown"`): Listen for `"keydown"` or `"keyup"` events.
+
+## Example
+
+```tsx
+import { useHotkey } from "@/hooks/use-hotkey";
+
+function Example() {
+  useHotkey("shift+/", () => {
+    alert("Keyboard shortcut triggered!");
+  });
+
+  return <span>Try pressing Shift + /</span>;
+}
