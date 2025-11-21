@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { Command } from "commander";
 import { init } from "./commands/init";
+import { add } from "./commands/add";
 // import { getPackageInfo } from "./utils/get-package-info";
 
 process.on("SIGINT", () => process.exit(0));
@@ -13,14 +14,7 @@ async function main() {
     .version("1.0.0");
 
   program.addCommand(init);
-
-  program
-    .command("add")
-    .argument("[components...]", "the components to add")
-    .description("Add a component to your project")
-    .action(async (components) => {
-      console.log("Adding:", components);
-    });
+  program.addCommand(add);
 
   program.parse();
 }
