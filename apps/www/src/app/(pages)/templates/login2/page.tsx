@@ -39,18 +39,15 @@ export default function LoginPage() {
 				toast.success("Login successful!", {
 					description: `Welcome back, ${response.data?.user.name}!`,
 				});
-				// TODO: Handle successful login (redirect, store token, etc.)
-				console.log("Login successful:", response.data);
 			} else {
 				toast.error("Login failed", {
-					description: response.error || "An unexpected error occurred",
+					description: response.error ?? "An unexpected error occurred",
 				});
 			}
-		} catch (err) {
-			console.error(err);
-			toast.error("Login error", {
-				description: "An error occurred during login. Please try again.",
-			});
+		} catch (err: unknown) {
+			let message = "An error occurred during login. Please try again.";
+			if (err instanceof Error) message = err.message;
+			toast.error("Login error", { description: message });
 		} finally {
 			setIsLoading(false);
 		}
@@ -64,26 +61,22 @@ export default function LoginPage() {
 				toast.success(`${provider} login successful!`, {
 					description: `Welcome back, ${response.data?.user.name}!`,
 				});
-				// TODO: Handle successful OAuth login
-				console.log(`${provider} login successful:`, response.data);
 			} else {
 				toast.error(`${provider} login failed`, {
-					description: response.error || "An unexpected error occurred",
+					description: response.error ?? "An unexpected error occurred",
 				});
 			}
-		} catch (err) {
-			console.error(err);
-			toast.error("OAuth error", {
-				description: `An error occurred during ${provider} login`,
-			});
+		} catch (err: unknown) {
+			let message = `An error occurred during ${provider} login`;
+			if (err instanceof Error) message = err.message;
+			toast.error("OAuth error", { description: message });
 		} finally {
 			setIsLoading(false);
 		}
 	};
 
 	return (
-		<div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-background via-background to-primary/5 px-4 py-12">
-			{/* Animated Background Elements */}
+		<div className="min-h-screen flex flex-col items-center justify-center bg-linear-to-b from-background via-background to-primary/5 px-4 py-12">
 			<div className="absolute inset-0 overflow-hidden pointer-events-none">
 				<motion.div
 					className="absolute top-20 left-10 w-64 h-64 bg-primary/5 rounded-full blur-3xl"
@@ -97,14 +90,12 @@ export default function LoginPage() {
 				/>
 			</div>
 
-			{/* Content Container */}
 			<motion.div
 				className="w-full max-w-md relative z-10"
 				initial={{ opacity: 0, y: 40 }}
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ duration: 0.7, ease: "easeOut" }}
 			>
-				{/* Header Section */}
 				<motion.div
 					className="text-center mb-12"
 					initial={{ opacity: 0, y: -20 }}
@@ -112,7 +103,7 @@ export default function LoginPage() {
 					transition={{ delay: 0.2, duration: 0.5 }}
 				>
 					<motion.div
-						className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-br from-primary to-primary/60 mb-6"
+						className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-linear-to-br from-primary to-primary/60 mb-6"
 						initial={{ scale: 0.8, opacity: 0 }}
 						animate={{ scale: 1, opacity: 1 }}
 						transition={{
@@ -126,11 +117,12 @@ export default function LoginPage() {
 							{"<>"}
 						</span>
 					</motion.div>
-					<h1 className="text-3xl font-bold text-foreground mb-2">Stash TS</h1>
+					<h1 className="text-3xl font-bold text-foreground mb-2">
+						Stash TS
+					</h1>
 					<p className="text-muted-foreground">Sign in to your account</p>
 				</motion.div>
 
-				{/* Login Card */}
 				<motion.div
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
@@ -141,8 +133,8 @@ export default function LoginPage() {
 							<form
 								onSubmit={form.handleSubmit(onSubmit)}
 								className="space-y-6"
+								aria-label="login form"
 							>
-								{/* Email Field */}
 								<motion.div
 									initial={{ opacity: 0, x: -10 }}
 									animate={{ opacity: 1, x: 0 }}
@@ -160,6 +152,7 @@ export default function LoginPage() {
 														type="email"
 														disabled={isLoading}
 														className="bg-background/50 border-border/50 focus-visible:border-primary/50"
+														aria-required
 														{...field}
 													/>
 												</FormControl>
@@ -169,7 +162,6 @@ export default function LoginPage() {
 									/>
 								</motion.div>
 
-								{/* Password Field */}
 								<motion.div
 									initial={{ opacity: 0, x: -10 }}
 									animate={{ opacity: 1, x: 0 }}
@@ -195,6 +187,7 @@ export default function LoginPage() {
 														type="password"
 														disabled={isLoading}
 														className="bg-background/50 border-border/50 focus-visible:border-primary/50"
+														aria-required
 														{...field}
 													/>
 												</FormControl>
@@ -204,7 +197,6 @@ export default function LoginPage() {
 									/>
 								</motion.div>
 
-								{/* Submit Button */}
 								<motion.div
 									initial={{ opacity: 0, y: 10 }}
 									animate={{ opacity: 1, y: 0 }}
@@ -222,7 +214,6 @@ export default function LoginPage() {
 							</form>
 						</Form>
 
-						{/* Divider */}
 						<div className="relative my-6">
 							<div className="absolute inset-0 flex items-center">
 								<div className="w-full border-t border-border/50" />
@@ -234,7 +225,6 @@ export default function LoginPage() {
 							</div>
 						</div>
 
-						{/* Social Buttons */}
 						<motion.div
 							className="grid grid-cols-2 gap-3"
 							initial={{ opacity: 0 }}
@@ -261,7 +251,6 @@ export default function LoginPage() {
 					</Card>
 				</motion.div>
 
-				{/* Sign Up Link */}
 				<motion.div
 					className="mt-8 text-center"
 					initial={{ opacity: 0 }}
@@ -279,7 +268,6 @@ export default function LoginPage() {
 					</p>
 				</motion.div>
 
-				{/* Footer Text */}
 				<motion.div
 					className="mt-6 text-center text-xs text-muted-foreground space-y-2"
 					initial={{ opacity: 0 }}
