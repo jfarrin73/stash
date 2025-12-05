@@ -1,0 +1,159 @@
+---
+title: useIntersection
+description: Observe when an element enters the viewport to trigger callbacks.
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+## Installation
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+  <Tab value="npm">
+  ```bash
+  npx stash-ts@latest add use-intersection
+  ```
+  </Tab>
+  <Tab value="pnpm">
+  ```bash
+  pnpm dlx stash-ts@latest add use-intersection
+  ```
+  </Tab>
+  <Tab value="yarn">
+  ```bash
+  yarn dlx stash-ts@latest add use-intersection
+  ```
+  </Tab>
+  <Tab value="bun">
+  ```bash
+  bunx stash-ts@latest add use-intersection
+  ```
+  </Tab>
+</Tabs>
+
+## Usage
+
+This hook is ideal for implementing **Infinite Scroll**. It allows you to trigger a fetch function when the user scrolls near the bottom of a list.
+
+```tsx
+import { useState, useCallback } from "react"
+import { useIntersection } from "@/hooks/use-intersection"
+
+// Mock API fetcher
+const fetchItems = async (page: number) => {
+  await new Promise((resolve) => setTimeout(resolve, 1000))
+  return Array.from({ length: 10 }, (_, i) => `Item ${page * 10 + i + 1}`)
+}
+
+export function InfiniteScrollList() {
+  const [items, setItems] = useState<string[]>([])
+  const [page, setPage] = useState(0)
+  const [isLoading, setIsLoading] = useState(false)
+  const [hasMore, setHasMore] = useState(true)
+
+  const loadMore = useCallback(async () => {
+    if (isLoading || !hasMore) return
+
+    setIsLoading(true)
+    try {
+      const newItems = await fetchItems(page)
+      setItems((prev) => [...prev, ...newItems])
+      setPage((prev) => prev + 1)
+      
+      // Stop after 5 pages for this demo
+      if (page >= 4) setHasMore(false)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [page, isLoading, hasMore])
+
+  // Ref is attached to the loader at the bottom
+  const ref = useIntersection(loadMore, {
+    rootMargin: "100px", // Trigger 100px before the element is visible
+    enabled: hasMore && !isLoading, // Disable observer when loading or finished
+  })
+
+  return (
+    <div className="max-w-md mx-auto border rounded-lg p-4 h-[400px] overflow-auto">
+      <ul className="space-y-2">
+        {items.map((item) => (
+          <li key={item} className="p-4 bg-slate-100 rounded">
+            {item}
+          </li>
+        ))}
+      </ul>
+
+      {/* Detection Area */}
+      <div ref={ref} className="py-4 text-center text-sm text-muted-foreground">
+        {isLoading ? "Loading more..." : hasMore ? "Scroll for more" : "No more data"}
+      </div>
+    </div>
+  )
+}
+```
+
+## Usage with React Query
+
+This hook integrates seamlessly with `useInfiniteQuery` to build robust infinite lists. The `rootMargin` allows you to pre-fetch the next page before the user hits the absolute bottom, creating a smoother experience.
+
+```tsx
+import { useInfiniteQuery } from "@tanstack/react-query"
+import { useIntersection } from "@/hooks/use-intersection"
+
+export function QueryInfiniteList() {
+  const { 
+    data, 
+    fetchNextPage, 
+    hasNextPage, 
+    isFetchingNextPage 
+  } = useInfiniteQuery({
+    queryKey: ['projects'],
+    queryFn: fetchProjects,
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+  })
+
+  const ref = useIntersection(() => fetchNextPage(), {
+    // Trigger fetch when the user is 500px away from the bottom
+    rootMargin: "500px",
+    // Only observe if there are more pages and we aren't currently fetching
+    enabled: hasNextPage && !isFetchingNextPage
+  })
+
+  return (
+    <div>
+      {data?.pages.map((group, i) => (
+        <React.Fragment key={i}>
+          {group.projects.map((project) => (
+            <ProjectCard key={project.id} project={project} />
+          ))}
+        </React.Fragment>
+      ))}
+      
+      {/* Loading Indicator / Sensor */}
+      <div ref={ref} className="h-8 w-full flex justify-center p-4">
+        {isFetchingNextPage && <Spinner />}
+      </div>
+    </div>
+  )
+}
+```
+
+## API
+
+```ts
+useIntersection(callback, options)
+```
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `callback` | `(entry) => void` | - | Function called when the element intersects. |
+| `options` | `UseIntersectionOptions` | `{}` | Configuration object (see below). |
+
+### Options
+
+| Option | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `root` | `HTMLElement` | `null` | The element that is used as the viewport for checking visibility of the target. |
+| `rootMargin` | `string` | `"0%"` | Margin around the root. Can have values similar to the CSS margin property. |
+| `threshold` | `number` | `0` | Either a single number or an array of numbers which indicate at what percentage of the target's visibility the observer's callback should be executed. |
+| `triggerOnce` | `boolean` | `false` | If true, the observer disconnects after the first intersection. Useful for lazy loading. |
+| `enabled` | `boolean` | `true` | If false, the observer is disconnected. Useful for disabling observation while data is fetching. |

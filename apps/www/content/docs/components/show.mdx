@@ -1,0 +1,88 @@
+---
+title: Show
+description: A declarative conditional rendering component that supports lazy evaluation.
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+## Installation
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+  <Tab value="npm">
+  ```bash
+  npx stash-ts@latest add show
+  ```
+  </Tab>
+  <Tab value="pnpm">
+  ```bash
+  pnpm dlx stash-ts@latest add show
+  ```
+  </Tab>
+  <Tab value="yarn">
+  ```bash
+  yarn dlx stash-ts@latest add show
+  ```
+  </Tab>
+  <Tab value="bun">
+  ```bash
+  bunx stash-ts@latest add show
+  ```
+  </Tab>
+</Tabs>
+
+## Usage
+
+The `Show` component replaces standard ternary operators (`? :`) with a cleaner, declarative syntax. It is particularly useful when you want to conditionally render content inside a layout wrapper without duplicating the wrapper itself.
+
+### Basic Usage
+
+```tsx
+import { Show } from "@/utils/show"
+
+export function StatusBadge({ isActive }) {
+  return (
+    <Show when={isActive} fallback={<span className="text-red-500">Offline</span>}>
+      <span className="text-green-500">Online</span>
+    </Show>
+  )
+}
+```
+
+### Safe Data Rendering (Lazy Evaluation)
+
+If your content relies on data that might be `null` or `undefined` while loading, standard JSX will crash because it attempts to evaluate props immediately.
+
+You can pass a **function** as the child to `Show`. This function will only execute when the condition is true.
+
+```tsx
+import { Show } from "@/utils/show"
+
+export function UserProfile({ data, isLoading }) {
+  return (
+    <div className="border p-4 rounded">
+      <h1>User Details</h1>
+      
+      <Show when={!isLoading} fallback={<Skeleton />}>
+        {/* 
+           Using a function prevents a crash. 
+           'data.name' is only accessed if !isLoading is true.
+        */}
+        {() => (
+           <div>
+             <p>Name: {data.name}</p>
+             <p>Email: {data.email}</p>
+           </div>
+        )}
+      </Show>
+    </div>
+  )
+}
+```
+
+## API
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `when` | `boolean` \| `any` | - | If truthy, renders children. If falsy, renders fallback. |
+| `fallback` | `ReactNode` | `null` | Content to render when the condition is false. |
+| `children` | `ReactNode` \| `() => ReactNode` | - | Content to render when the condition is true. |
