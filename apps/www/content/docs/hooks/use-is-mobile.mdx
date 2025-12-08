@@ -1,0 +1,76 @@
+---
+title: useIsMobile
+description: Programmatically detect if the viewport matches a mobile breakpoint.
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+## Installation
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+  <Tab value="npm">
+  ```bash
+  npx stash-ts@latest add use-is-mobile
+  ```
+  </Tab>
+  <Tab value="pnpm">
+  ```bash
+  pnpm dlx stash-ts@latest add use-is-mobile
+  ```
+  </Tab>
+  <Tab value="yarn">
+  ```bash
+  yarn dlx stash-ts@latest add use-is-mobile
+  ```
+  </Tab>
+  <Tab value="bun">
+  ```bash
+  bunx stash-ts@latest add use-is-mobile
+  ```
+  </Tab>
+</Tabs>
+
+## Usage
+
+This hook uses `window.matchMedia` to determine if the current viewport width is below a specific breakpoint. It is useful for conditional rendering where CSS media queries are not enough (e.g., rendering a Drawer on mobile vs. a Dialog on desktop).
+
+```tsx
+import { useIsMobile } from "@/hooks/use-is-mobile"
+
+export function ResponsiveNavigation() {
+  const isMobile = useIsMobile()
+
+  if (isMobile) {
+    return (
+      <nav className="fixed bottom-0 w-full border-t">
+        {/* Mobile Tab Bar */}
+      </nav>
+    )
+  }
+
+  return (
+    <nav className="fixed left-0 h-full w-64 border-r">
+       {/* Desktop Sidebar */}
+    </nav>
+  )
+}
+```
+
+### Custom Breakpoint
+
+You can override the default breakpoint (768px) by passing a number as an argument.
+
+```tsx
+// Returns true if width < 1024px
+const isTablet = useIsMobile(1024) 
+```
+
+## API
+
+```ts
+useIsMobile(mobileBreakpoint?: number)
+```
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `mobileBreakpoint` | `number` | `768` | The pixel width to trigger the mobile state. |
