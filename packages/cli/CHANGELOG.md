@@ -1,5 +1,11 @@
 # stash-ts
 
+## 0.0.5
+
+### Patch Changes
+
+- af14606: add useIsMobile hook
+
 ## 0.0.4
 
 ### Patch Changes
