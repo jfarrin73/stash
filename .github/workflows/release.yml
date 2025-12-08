@@ -15,6 +15,7 @@ permissions:
 jobs:
   release:
     name: Release
+    environment: Production
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
